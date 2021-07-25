@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   // maybe userAuthInfo{ {...} ..} ???
@@ -8,7 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   // email: {
   //  type: String,
-  // required: [true, 'Set name for user']
+  // required: [true, 'Set email for user']
   // },
   login: {
     type: String,
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema({
     bloodGroup: {
       type: Number,
       required: true,
-      //type is Number, and default meaning -do we need?
+      // type is Number, and default meaning -do we need?
     },
   },
 });

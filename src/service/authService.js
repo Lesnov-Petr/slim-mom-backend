@@ -1,11 +1,11 @@
 // const bcrypt = require('bcrypt')
-const jwt = require("jsonwebtoken"); //+
+const jwt = require("jsonwebtoken"); // +
 
-const { User } = require("../db/userModel"); //+
+const { User } = require("../db/userModel"); // +
 const {
   NotAuthorizedError,
   RegistrationConflictError,
-} = require("../helpers/errors"); //+
+} = require("../helpers/errors"); // +
 
 const registration = async ({ name, login, password }) => {
   const existLogin = await User.findOne({ login });
@@ -20,7 +20,7 @@ const registration = async ({ name, login, password }) => {
   const newUser = await user.save();
   // await user.save()
   return { login: newUser.login, subscription: newUser.subscription };
-}; //+-
+}; // +-
 
 const login = async ({ login, password }) => {
   const user = await User.findOne({ login });

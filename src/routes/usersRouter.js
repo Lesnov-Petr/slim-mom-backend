@@ -1,7 +1,7 @@
-//=============================================
-//пример с использованием "asyncWrapper"
+// =============================================
+// пример с использованием "asyncWrapper"
 // router.post('/signup', userValidation, asyncWrapper(signupController))
-//=============================================
+// =============================================
 
 const express = require("express");
 const router = express.Router();

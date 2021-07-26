@@ -1,8 +1,7 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const { asyncWrapper } = require('../helpers/apiHelpers')
-
+const { asyncWrapper } = require("../helpers/apiHelpers");
 
 const {
   searchProductsController,
@@ -11,17 +10,20 @@ const {
   addEatenProductsController,
   deleteEatenProductsController,
   getEatenProductsController,
-} = require('../controllers/productsController')
+} = require("../controllers/productsController");
 
-
-router.get('/search', asyncWrapper(searchProductsController))
-router.get('/recommendation', asyncWrapper(publicRecommendationController))
-router.post('/recommendation', asyncWrapper(privateRecommendationController))
+router.get("/search", asyncWrapper(searchProductsController));
+router.get("/recommendation", asyncWrapper(publicRecommendationController));
+router.post("/recommendation", asyncWrapper(privateRecommendationController));
 // 8 энд-поинт на добавление съеденного продукта в конкретный день
-router.post('/eaten/:userId', asyncWrapper(addEatenProductsController))
-// 9 энд-поинт на удаление съеденного продукта в конкретный день
-router.delete('/eaten', asyncWrapper(deleteEatenProductsController))
-// 10 энд-поинт на получение всей информации по конкретному дню
-router.get('/eaten', asyncWrapper(getEatenProductsController))
+router.post("/eaten/:userId", asyncWrapper(addEatenProductsController));
 
-module.exports = { productsRouter: router}
+// 9 энд-поинт на удаление съеденного продукта в конкретный день
+router.delete(
+  "/eaten/:eatenFoodId",
+  asyncWrapper(deleteEatenProductsController)
+);
+// 10 энд-поинт на получение всей информации по конкретному дню
+router.get("/eaten", asyncWrapper(getEatenProductsController));
+
+module.exports = { productsRouter: router };

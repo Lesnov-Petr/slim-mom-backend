@@ -32,13 +32,12 @@ const publicRecommendation = async ({
   desiredWeight,
   bloodGroup,
 }) => {
-  const recommendedCaloriesPerDay =
-    10 * weight + 6.25 * height - 5 * age - 161 - 10 * (weight - desiredWeight);
+  const recommendedCaloriesPerDay = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) - 161 - 10 * (Number(weight) - Number(desiredWeight));
 
   const allProductsList = await Products.find({});
   const productsNotAllowed = allProductsList.reduce((acc, product) => {
     if (product.groupBloodNotAllowed[Number(bloodGroup)]) {
-      acc.push(product.categories.join(", "));
+      acc.push(...product.categories);
     }
     const uniqueList = acc.filter(
       (category, index, arr) => arr.indexOf(category) === index

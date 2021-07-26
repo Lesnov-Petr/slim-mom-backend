@@ -47,6 +47,14 @@ class AlreadyVarifiedError extends ClientError {
   }
 }
 
+class QueryError extends ClientError {
+  constructor(message) {
+    super(message)
+    this.status = 400;
+  }
+}
+
+
 module.exports = {
   ClientError,
   ValidationError,
@@ -54,5 +62,6 @@ module.exports = {
   NotAuthorizedError,
   RegistrationConflictError,
   NotVarifiedError,
-  AlreadyVarifiedError
+  AlreadyVarifiedError,
+  QueryError,
 }

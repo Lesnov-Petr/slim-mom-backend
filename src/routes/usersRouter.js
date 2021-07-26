@@ -6,7 +6,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { userRegistrationValidation } = require("../middlewares/validation");
+const {
+  userRegistrationValidation,
+  userLoginValidation,
+} = require("../middlewares/validation");
 const { asyncWrapper } = require("../helpers/apiHelpers");
 // const { authMiddleware } = require('../middlewares/authMiddleware')
 
@@ -22,11 +25,7 @@ router.post(
   userRegistrationValidation,
   asyncWrapper(registrationController)
 );
-router.post(
-  "/login",
-  userRegistrationValidation,
-  asyncWrapper(logInController)
-);
+router.post("/login", userLoginValidation, asyncWrapper(logInController));
 router.post("/logout", asyncWrapper(logOutController));
 router.get("/current", asyncWrapper(getCurrentUserController));
 

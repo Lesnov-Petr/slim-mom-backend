@@ -30,6 +30,15 @@ const userRegistrationValidation = (req, res, next) => {
   checkValidation(schema, req, res, next);
 };
 
+const userLoginValidation = (req, res, next) => {
+  const schema = Joi.object({
+    login: Joi.string().min(6).max(14),
+    password: Joi.string().min(6).max(14).required(),
+  });
+  checkValidation(schema, req, res, next);
+};
+
 module.exports = {
   userRegistrationValidation,
+  userLoginValidation,
 };

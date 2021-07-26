@@ -33,9 +33,10 @@ const privateRecommendationController = async (req, res) => {
   
 }
 
-const postEatenProductsController = async (req, res) => {
-  const { title, weight, calories } = req.body
-  const savedProduct = await postEatenProducts({ title, weight, calories })
+const addEatenProductsController = async (req, res) => {
+  const { userId } = req.params
+  const { title, weight, calories, date } = req.body
+  const savedProduct = await postEatenProducts({ title, weight, calories, date, userId })
   res.json({message: 'success', savedProduct})
 }
 
@@ -51,7 +52,7 @@ module.exports = {
   searchProductsController,
   publicRecommendationController,
   privateRecommendationController,
-  postEatenProductsController,
+  addEatenProductsController,
   deleteEatenProductsController,
   getEatenProductsController,
 }

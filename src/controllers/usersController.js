@@ -1,34 +1,26 @@
 const {
-  login,
   registration,
-  logout,
+  logIn,
+  logOut,
   getCurrentUser,
-  updateSubscription,
 } = require("../services/authService");
 
 const registrationController = async (req, res, next) => {
-  const { name, login, password } = req.body;
-  await registration({ name, login, password });
+  const { name, login, password, userInfo } = req.body;
+  await registration({ name, login, password, userInfo });
   res.status(201).json({ status: "created" });
-  // res.status(201).json({
-  //   user: {
-  //     name: name,
-  //     login: login,
-  //     password: password
-  //   }
-  // })
 };
 
 const logInController = async (req, res, next) => {
   const { login, password } = req.body;
-  const token = await login({ login, password });
-  return res.status(200).json({ token });
+  const user = await logIn({ login, password });
+  return res.status(200).json({ user });
 };
 
 const logOutController = async (req, res) => {
   const { userId } = req.user;
   const token = req.token;
-  await logout({
+  await logOut({
     userId,
     token,
   });
@@ -42,18 +34,10 @@ const getCurrentUserController = async (req, res, next) => {
   const currentUser = await getCurrentUser({ userId, token });
   return res.status(200).json({ currentUser });
 };
-const updateSubscriptionController = async (req, res, next) => {
-  const token = req.token;
-  const { subscription } = req.body;
-  const { _id: userId } = req.user;
-  const currentUser = await updateSubscription({ token, subscription }, userId);
-  res.status(200).json({ currentUser });
-};
 
 module.exports = {
   registrationController,
   logInController,
   logOutController,
   getCurrentUserController,
-  updateSubscriptionController,
 };

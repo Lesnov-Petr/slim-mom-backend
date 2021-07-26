@@ -7,10 +7,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Set name for user"],
   },
-  // email: {
-  //  type: String,
-  // required: [true, 'Set email for user']
-  // },
   login: {
     type: String,
     required: [true, "Set login for user"],

@@ -1,18 +1,29 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const eatenProductsSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: [true, "Set title for product"]
+  userId: {
+    type: String ||  mongoose.Schema.Types.ObjectId,
+    required: [true, "Provide user id"],
+    unique: true
   },
-  calories: {
-    type: String,
-    required: [true, "Set calories for the amount of eaten product"]
-  },
-  weight: {
-    type: String,
-    required: [true, "Set weight of eaten product"]
-  },
+  eatenProducts: [{
+     title: {
+      type: String,
+      required: [true, "Set title for product"]
+    },
+    calories: {
+      type: String,
+      required: [true, "Set calories for the amount of eaten product"]
+    },
+    weight: {
+      type: String,
+      required: [true, "Set weight of eaten product"]
+    },
+    date: {
+      type: String,
+      required: [true, "Set date"]
+    },
+  }]
 });
 
 const EatenProducts = mongoose.model("EatenProducts", eatenProductsSchema);

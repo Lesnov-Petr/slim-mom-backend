@@ -1,3 +1,5 @@
+const mongoose = require("mongoose")
+const ObjectID = mongoose.Types.ObjectId
 const { Products } = require('../db/productsModel')
 const { EatenProducts } = require('../db/eatenProductsModel')
 
@@ -46,10 +48,17 @@ const privateRecommendation = async () => {
 
 }
 
-const postEatenProducts = async ({ title, weight, calories }) => {
-  const newProduct = new EatenProducts({title, weight, calories })
-  await newProduct.save()
-  return newProduct
+const postEatenProducts = async ({ title, weight, calories, userId, date }) => {
+  const user = await EatenProducts.findOne({ userId })
+  const _id = new ObjectID()
+  if (!user) {
+    const newUserProductList = new EatenProducts({ userId ,
+       eatenProducts: [{ _id , title, weight, calories, date }] })
+    await newUserProductList.save()
+    return _id
+  }
+   await EatenProducts.findOneAndUpdate({ userId }, { $push: {eatenProducts: {  _id ,title, weight, calories, date }}})
+  return _id
 }
 
 const deleteEatenProducts = async () => {

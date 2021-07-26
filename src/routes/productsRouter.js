@@ -8,7 +8,7 @@ const {
   searchProductsController,
   publicRecommendationController,
   privateRecommendationController,
-  postEatenProductsController,
+  addEatenProductsController,
   deleteEatenProductsController,
   getEatenProductsController,
 } = require('../controllers/productsController')
@@ -18,7 +18,7 @@ router.get('/search', asyncWrapper(searchProductsController))
 router.get('/recommendation', asyncWrapper(publicRecommendationController))
 router.post('/recommendation', asyncWrapper(privateRecommendationController))
 // 8 энд-поинт на добавление съеденного продукта в конкретный день
-router.post('/eaten', asyncWrapper(postEatenProductsController))
+router.post('/eaten/:userId', asyncWrapper(addEatenProductsController))
 // 9 энд-поинт на удаление съеденного продукта в конкретный день
 router.delete('/eaten', asyncWrapper(deleteEatenProductsController))
 // 10 энд-поинт на получение всей информации по конкретному дню

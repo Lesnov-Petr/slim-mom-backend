@@ -1,8 +1,3 @@
-// =============================================
-// пример с использованием "asyncWrapper"
-// router.post('/signup', userValidation, asyncWrapper(signupController))
-// =============================================
-
 const express = require("express");
 const router = express.Router();
 
@@ -11,7 +6,7 @@ const {
   userLoginValidation,
 } = require("../middlewares/validation");
 const { asyncWrapper } = require("../helpers/apiHelpers");
-// const { authMiddleware } = require('../middlewares/authMiddleware')
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const {
   registrationController,
@@ -26,16 +21,7 @@ router.post(
   asyncWrapper(registrationController)
 );
 router.post("/login", userLoginValidation, asyncWrapper(logInController));
-router.post("/logout", asyncWrapper(logOutController));
-router.get("/current", asyncWrapper(getCurrentUserController));
-
-// router.post("/logout", authMiddleware, asyncWrapper(logOutController));
-// router.get("/current", authMiddleware, asyncWrapper(getCurrentUserController));
-// router.patch(
-//   "/",
-//   authMiddleware,
-//   subscriptionValidation,
-//   asyncWrapper(updateSubscriptionController)
-// );
+router.post("/logout", authMiddleware, asyncWrapper(logOutController));
+router.get("/current", authMiddleware, asyncWrapper(getCurrentUserController));
 
 module.exports = router;

@@ -4,7 +4,7 @@ const {
   logout,
   getCurrentUser,
   updateSubscription,
-} = require("../service/authService");
+} = require("../services/authService");
 
 const registrationController = async (req, res, next) => {
   const { name, login, password } = req.body;

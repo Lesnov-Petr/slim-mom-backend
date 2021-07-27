@@ -95,7 +95,44 @@
         }
       }
     },
-    "/products/recommendation": {},
+    "/products/recommendation": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Returns nutritional recommendations and daily calorie intake",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Object of user's physiological parameters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "500" : {
+             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/products/eaten/:userId": {
       "post": {
         "tags": ["Products"],
@@ -117,7 +154,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/EatenProductsResponse"
                 }
               }
             }
@@ -125,6 +162,9 @@
           "400": {
             "description": "Bad request (invalid request body)",
             "content": {}
+          },
+          "500" : {
+             "description": "Internal Server Error"
           }
         }
       }
@@ -201,6 +241,46 @@
             "description": "User's blood group",
             "example": "1"
           }
+        }
+      },
+      "RecommendationResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "recommendedCaloriesPerDay": {
+              "type": "number",
+              "description": "Recommended daily calorie intake"
+            },
+            "productsNotAllowed": {
+              "type": "array",
+              "description": "List of categories not allowed",
+              "example": ["мучные", "молочные", "мясо"]
+            }
+          }
+        },
+        "example": {
+          "message": "success",
+          "recommendation": {
+            "recommendedCaloriesPerDay": 1444,
+            "productsNotAllowed": ["мучные", "молочные", "мясо"]
+          }
+        }
+      },
+      "EatenProductsResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "savedProductId": {
+              "type": "string",
+              "description": "Id of saved product"
+            }
+          }
+        },
+         "example": {
+          "message": "success",
+          "savedProductId": "61001b689081880004a65f49"
         }
       }
     },

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const eatenProductsSchema = new mongoose.Schema({
-  userId: {
+  owner: {
     type: String ||  mongoose.Schema.Types.ObjectId,
     required: [true, "Provide user id"],
     unique: true

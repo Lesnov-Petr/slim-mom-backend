@@ -83,7 +83,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
+                  "$ref": "#/components/schemas/SearchProductResponse"
                 }
               }
             }
@@ -133,7 +133,7 @@
         }
       }
     },
-    "/products/eaten/:userId": {
+    "/products/eaten": {
       "post": {
         "tags": ["Products"],
         "summary": "Add the eaten product on a specific day",
@@ -169,15 +169,19 @@
         }
       }
     },
-    "/products/eaten/:eatenFoodId": {},
-    "/products/eaten": {}
+    "/products/eaten/:eatenFoodId": {}
   },
   "components": {
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password"],
+        "required": ["login", "email", "password"],
         "properties": {
+          "login": {
+            "type": "string",
+            "description": "User's login",
+            "format": "email"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -191,7 +195,29 @@
         }
       },
       "RegistrationResponse": {
-        "type": "array",
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "number",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          { "email": "1@gmail.com", "userId": "1" },
+          { "email": "2@gmail.com", "userId": "2" }
+        ]
+      },
+      "SearchProductResponse": {
+         "type": "array",
         "items": {
           "type": "object",
           "properties": {
@@ -213,29 +239,9 @@
         ]
       },
       "RecommendationRequest": {
-        "type": "object",
-        "required": ["height", "weight", "age", "desiredWeight", "bloodGroup"],
+        "type": "number",
+        "required": ["bloodGroup"],
         "properties": {
-          "height": {
-            "type": "number",
-            "description": "User's height",
-            "example": "175"
-          },
-          "weight": {
-            "type": "number",
-            "description": "User's weight",
-            "example": "73"
-          },
-          "age": {
-            "type": "number",
-            "description": "User's age",
-            "example": "34"
-          },
-          "desiredWeight": {
-            "type": "number",
-            "description": "Weight user desires to reach",
-            "example": "68"
-          },
           "bloodGroup": {
             "type": "number",
             "description": "User's blood group",
@@ -248,10 +254,6 @@
         "items": {
           "type": "object",
           "properties": {
-            "recommendedCaloriesPerDay": {
-              "type": "number",
-              "description": "Recommended daily calorie intake"
-            },
             "productsNotAllowed": {
               "type": "array",
               "description": "List of categories not allowed",
@@ -261,10 +263,7 @@
         },
         "example": {
           "message": "success",
-          "recommendation": {
-            "recommendedCaloriesPerDay": 1444,
-            "productsNotAllowed": ["мучные", "молочные", "мясо"]
-          }
+          "productsNotAllowed": ["мучные", "молочные", "мясо"]
         }
       },
       "EatenProductsResponse": {

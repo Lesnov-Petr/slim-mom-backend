@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
-  // maybe userAuthInfo{ {...} ..} ???
   name: {
     type: String,
     required: [true, "Set name for user"],
@@ -17,28 +16,24 @@ const userSchema = new mongoose.Schema({
     required: [true, "Set password for user"],
   },
 
-  userInfo: {
-    height: {
-      type: Number,
-      required: true,
-    },
-    weight: {
-      type: Number,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-    },
-    desiredWeight: {
-      type: Number,
-      required: true,
-    },
-    bloodGroup: {
-      type: Number,
-      required: true,
-      // type is Number, and default meaning -do we need?
-    },
+  height: {
+    type: Number,
+  },
+  weight: {
+    type: Number,
+  },
+  age: {
+    type: Number,
+  },
+  desiredWeight: {
+    type: Number,
+  },
+  bloodGroup: {
+    type: Number,
+  },
+  token: {
+    type: String,
+    default: null,
   },
 });
 

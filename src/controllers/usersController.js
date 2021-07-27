@@ -7,8 +7,8 @@ const {
 
 const registrationController = async (req, res, next) => {
   const { name, login, password, userInfo } = req.body;
-  await registration({ name, login, password, userInfo });
-  res.status(201).json({ status: "created" });
+  const user = await registration({ name, login, password, userInfo });
+  res.status(201).json({ user });
 };
 
 const logInController = async (req, res, next) => {
@@ -19,9 +19,11 @@ const logInController = async (req, res, next) => {
 
 const logOutController = async (req, res) => {
   const { userId } = req.user;
+  // const { user } = req.user;
   const token = req.token;
   await logOut({
     userId,
+    // user,
     token,
   });
 

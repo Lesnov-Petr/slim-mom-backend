@@ -5,7 +5,7 @@ const { EatenProducts } = require("../db/eatenProductsModel");
 
 const { QueryError } = require("../helpers/errors");
 
-const searchProducts = async (query) => {
+const searchProducts = async (query) => { 
   const allProductsList = await Products.find({});
   const templatedQuery = query.trim().toLowerCase().split(" ");
   const queriedProducts = allProductsList.filter((product) => {
@@ -25,15 +25,7 @@ const searchProducts = async (query) => {
   return queriedProducts;
 };
 
-const publicRecommendation = async ({
-  height,
-  weight,
-  age,
-  desiredWeight,
-  bloodGroup,
-}) => {
-  const recommendedCaloriesPerDay = 10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) - 161 - 10 * (Number(weight) - Number(desiredWeight));
-
+const publicRecommendation = async (bloodGroup) => {
   const allProductsList = await Products.find({});
   const productsNotAllowed = allProductsList.reduce((acc, product) => {
     if (product.groupBloodNotAllowed[Number(bloodGroup)]) {
@@ -44,24 +36,24 @@ const publicRecommendation = async ({
     );
     return uniqueList;
   }, []);
-  return { recommendedCaloriesPerDay, productsNotAllowed };
+  return productsNotAllowed;
 };
 
 const privateRecommendation = async () => {};
 
-const postEatenProducts = async ({ title, weight, calories, userId, date }) => {
-  const user = await EatenProducts.findOne({ userId });
+const addEatenProducts = async ({ title, weight, calories, owner, date }) => {
+  const user = await EatenProducts.findOne({ owner });
   const _id = new ObjectID();
   if (!user) {
     const newUserProductList = new EatenProducts({
-      userId,
+      owner,
       eatenProducts: [{ _id, title, weight, calories, date }],
     });
     await newUserProductList.save();
     return _id;
   }
   await EatenProducts.findOneAndUpdate(
-    { userId },
+    { owner },
     { $push: { eatenProducts: { _id, title, weight, calories, date } } }
   );
   return _id;
@@ -84,7 +76,7 @@ module.exports = {
   searchProducts,
   publicRecommendation,
   privateRecommendation,
-  postEatenProducts,
+  addEatenProducts,
   deleteEatenProducts,
   getEatenProducts,
 };

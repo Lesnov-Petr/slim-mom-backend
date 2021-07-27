@@ -2,40 +2,44 @@ const {
   searchProducts,
   publicRecommendation,
   privateRecommendation,
-  postEatenProducts,
+  addEatenProducts,
   deleteEatenProducts,
   getEatenProducts,
 } = require("../services/productsServices");
+const { QueryError, ClientError } = require('../helpers/errors')
 
 const searchProductsController = async (req, res) => {
   const { query } = req.query;
+  if (!query) {
+    throw new QueryError('Provide a query string')
+  }
   const productsList = await searchProducts(query);
   res.json({ message: "success", productsList });
 };
 
 const publicRecommendationController = async (req, res) => {
-  const { height, weight, age, desiredWeight, bloodGroup } = req.body;
-  const recommendation = await publicRecommendation({
-    height,
-    weight,
-    age,
-    desiredWeight,
-    bloodGroup,
-  });
-  res.json({ message: "success", recommendation });
+  const { bloodGroup } = req.body;
+  if (Number.isNaN(bloodGroup)) {
+    throw new ClientError("Blood group must be a number")
+  }
+  if (!bloodGroup) {
+    throw new ClientError("Provide a blood group")
+  }
+  const productsNotAllowed = await publicRecommendation(bloodGroup);
+  res.json({ message: "success", productsNotAllowed });
 };
 
 const privateRecommendationController = async (req, res) => {};
 
 const addEatenProductsController = async (req, res) => {
-  const { userId } = req.params;
+  const owner = req.userId;
   const { title, weight, calories, date } = req.body;
-  const savedProduct = await postEatenProducts({
+  const savedProduct = await addEatenProducts({
     title,
     weight,
     calories,
     date,
-    userId,
+    owner,
   });
   res.json({ message: "success", savedProduct });
 };

@@ -98,11 +98,10 @@
     "/products/recommendation": {
       "get": {
         "tags": ["Products"],
-        "summary": "Returns nutritional recommendations and daily calorie intake",
+        "summary": "Returns recommended daily calorie intake",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Object of user's physiological parameters",
+          "description": "User's blood number",
           "required": true,
           "content": {
             "application/json": {
@@ -137,17 +136,19 @@
       "post": {
         "tags": ["Products"],
         "summary": "Add the eaten product on a specific day",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "type": "string",
-            "description": "Id of user who ate the product"
+        "parameters": [],
+        "requestBody": {
+          "description": "Product's information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EatenProductsRequest"
+              }
+            }
           }
-        ],
+        },
         "security": [{ "Bearer": [] }],
-        
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -217,35 +218,59 @@
         ]
       },
       "SearchProductResponse": {
-         "type": "array",
+         "type": "object",
         "items": {
           "type": "object",
           "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
+            "categories": {
+              "type": "array",
+              "description": "Product's category",
+              "example": ["яйца"]
             },
-            "userId": {
+            "weight": {
               "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
+              "description": "Standard product's weight (100g) ",
+              "example": "100"
+            },
+            "title": {
+              "type": "object",
+              "description": "Product's title",
+              "example": {
+                "ru": "Яйцо куриное (желток сухой)",
+                "ua": "Яйце куряче (жовток сухий)"
+              }
+            },
+            "calories": {
+              "type": "number",
+              "description": "Product's calories (for 100g)",
+              "example": "623"
+            },
+            "groupBloodNotAllowed": {
+              "type": "array",
+              "description": "Array of booleans. If product is not recommended the meaning is 'true' ",
+              "example": [null, true, false, false, false]
             }
           }
         },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
+        "example": {
+          "categories": ["яйца"],
+          "weight": 100,
+          "title": {
+            "ru": "Яйцо куриное (желток сухой)",
+            "ua": "Яйце куряче (жовток сухий)"
+           },
+          "calories": 623,
+          "groupBloodNotAllowed": [null, true, false, false, false]
+        }
       },
       "RecommendationRequest": {
-        "type": "number",
+        "type": "object",
         "required": ["bloodGroup"],
         "properties": {
           "bloodGroup": {
             "type": "number",
             "description": "User's blood group",
-            "example": "1"
+            "example": "2"
           }
         }
       },
@@ -264,6 +289,32 @@
         "example": {
           "message": "success",
           "productsNotAllowed": ["мучные", "молочные", "мясо"]
+        }
+      },
+      "EatenProductsRequest": {
+        "type": "object",
+        "required": ["title", "weight", "calories", "date"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Product's title",
+            "example": "Banana"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Product's weight",
+            "example": "170"
+          },
+          "calories": {
+            "type": "number",
+            "description": "Eaten product's calories",
+            "example": "450"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date product was eaten",
+            "example": "29.07.2021"
+          }
         }
       },
       "EatenProductsResponse": {

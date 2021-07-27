@@ -26,6 +26,7 @@ const searchProducts = async (query) => {
 };
 
 const publicRecommendation = async (bloodGroup) => {
+
   const allProductsList = await Products.find({});
   const productsNotAllowed = allProductsList.reduce((acc, product) => {
     if (product.groupBloodNotAllowed[Number(bloodGroup)]) {
@@ -39,7 +40,32 @@ const publicRecommendation = async (bloodGroup) => {
   return productsNotAllowed;
 };
 
-const privateRecommendation = async () => {};
+const privateRecommendation = async (
+  { height, weight, age, desiredWeight, bloodGroup },
+  userId
+) => {
+  const user = await User.findById({ userId });
+  const recommendedCaloriesPerDay =
+    10 * Number(weight) +
+    6.25 * Number(height) -
+    5 * Number(age) -
+    161 -
+    10 * (Number(weight) - Number(desiredWeight));
+
+  const allProductsList = await Products.find({});
+
+  const productsNotAllowed = allProductsList.reduce((acc, product) => {
+    if (product.groupBloodNotAllowed[Number(bloodGroup)]) {
+      acc.push(...product.categories);
+    }
+    const uniqueList = acc.filter(
+      (category, index, arr) => arr.indexOf(category) === index
+    );
+    return uniqueList;
+  }, []);
+
+  return { recommendedCaloriesPerDay, productsNotAllowed };
+};
 
 const addEatenProducts = async ({ title, weight, calories, owner, date }) => {
   const user = await EatenProducts.findOne({ owner });
@@ -59,14 +85,19 @@ const addEatenProducts = async ({ title, weight, calories, owner, date }) => {
   return _id;
 };
 
-const deleteEatenProducts = async (eatenProductId) => {
-  await EatenProducts.findOneAndRemove(eatenProductId);
+const deleteEatenProducts = async (eatenProductId, userId) => {
+  await EatenProducts.findOneAndRemove({
+    _id: ObjectID(eatenProductId),
+    userId,
+  });
 };
 
 const getEatenProducts = async (userId, dateToFind) => {
-  const userFoodList = await EatenProducts.findOne({ userId });
+  const userFoodList = await EatenProducts.findOne({
+    userId,
+  });
 
-  const userFoodListByDate = await userFoodList.filter(
+  const userFoodListByDate = await userFoodList.eatenProducts.filter(
     ({ date }) => date === dateToFind
   );
   return userFoodListByDate;

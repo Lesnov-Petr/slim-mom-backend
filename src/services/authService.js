@@ -58,7 +58,7 @@ const registration = async ({
   });
   await user.save();
   await logIn({ login, password });
-  return {name, login}
+  return {name, login, height, weight, desiredWeight, bloodGroup, age,}
 };
 
 const logOut = async ({ id }) => {

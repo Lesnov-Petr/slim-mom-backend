@@ -9,10 +9,11 @@ const {
 
 const logIn = async ({ login, password }) => {
   const user = await User.findOne({ login });
+
   if (!user) {
-    throw new NotAuthorizedError("login  is wrong");
+    throw new NotAuthorizedError("Login  is wrong");
   }
-  if (!await bcrypt.compare(password, user.password)) {
+  if (!(await bcrypt.compare(password, user.password))) {
     throw new NotAuthorizedError("Password is wrong");
   }
 
@@ -24,17 +25,13 @@ const logIn = async ({ login, password }) => {
     process.env.JWT_SECRET
   );
 
-  await User.findByIdAndUpdate(
-    user._id,
-    { $set: { token } },
-    { new: true }
-  );
-  return {token, login};
+  await User.findByIdAndUpdate(user._id, { $set: { token } }, { new: true });
+  return { token, login };
 };
 
 const registration = async ({
-  name,
   login,
+  email,
   password,
   height,
   weight,
@@ -42,13 +39,14 @@ const registration = async ({
   bloodGroup,
   age,
 }) => {
+  const existEmail = await User.findOne({ email });
   const existLogin = await User.findOne({ login });
-  if (existLogin) {
-    throw new RegistrationConflictError("Login is already used");
+  if (existEmail || existLogin) {
+    throw new RegistrationConflictError("Email or login is already used");
   }
   const user = new User({
-    name,
     login,
+    email,
     password,
     height,
     weight,
@@ -58,7 +56,7 @@ const registration = async ({
   });
   await user.save();
   await logIn({ login, password });
-  return {name, login, height, weight, desiredWeight, bloodGroup, age,}
+  return { login, email, height, weight, desiredWeight, bloodGroup, age };
 };
 
 const logOut = async (userId) => {

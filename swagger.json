@@ -130,6 +130,45 @@
              "description": "Internal Server Error"
           }
         }
+      },
+      "post": {
+        "tags": ["Products"],
+        "summary": "Returns recommended daily calorie intake",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User's blood number",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized - wrong token"
+          },
+          "500" : {
+             "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/products/eaten": {

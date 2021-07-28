@@ -59,18 +59,17 @@ const addEatenProductsController = async (req, res) => {
 };
 
 const deleteEatenProductsController = async (req, res) => {
-  // const { dateToFind } = req.body;
   const { id: eatenProductId } = req.params;
-  const { userId } = req;
+  const owner = req.userId;
 
-  await deleteEatenProducts(eatenProductId, userId);
+  await deleteEatenProducts({eatenProductId, owner});
   res.json({ message: `Product has been successfully deleted` });
 };
 
 const getEatenProductsController = async (req, res) => {
-  const { userId } = req;
-  const { dateToFind } = req.body;
-  const userFoodListByDay = await getEatenProducts(userId, dateToFind);
+  const owner  = req.userId;
+  const { date: dateToFind } = req.body;
+  const userFoodListByDay = await getEatenProducts({owner, dateToFind});
   res.json({ message: "success", userFoodListByDay });
 };
 

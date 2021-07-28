@@ -69,12 +69,10 @@
         }
       }
     },
-    "/products/recommendation": {
+  "/products/recommendation": {
       "get": {
-        "tags": [
-          "Products"
-        ],
-        "summary": "Returns recommended daily calorie intake",
+        "tags": ["Products"],
+        "summary": "Returns a list of not recommended product categories",
         "parameters": [],
         "requestBody": {
           "description": "User's blood number",
@@ -104,6 +102,45 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      },
+    "post": {
+        "tags": ["Products"],
+        "summary": "Returns a list of not recommended product categories and save user's physiological parameters",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User's blood number",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized - wrong token"
+          },
+          "500" : {
+             "description": "Internal Server Error"
           }
         }
       }
@@ -150,10 +187,42 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get the eaten product on a specific day",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Requested date",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetEatenProductsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEatenProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
       }
     },
-    "/products/eaten/:eatenFoodId": {},
-    "/usres/registration": {
+    "/users/registration": {
       "post": {
         "tags": [
           "Users"
@@ -235,6 +304,36 @@
           "400": {
             "description": "Bad request (invalid request body)",
             "content": {}
+          },
+          "500" : {
+             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/products/eaten/:id": {
+      "delete": {
+        "tags": ["Products"],
+        "summary": "Delete the product which was added to eaten list",
+        "parameters": [{"params": "id"}],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteEatenProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "500" : {
+             "description": "Internal Server Error"
           }
         }
       }
@@ -442,7 +541,7 @@
           ]
         }
       },
-      "EatenProductsRequest": {
+      "AddEatenProductsRequest": {
         "type": "object",
         "required": [
           "title",
@@ -473,7 +572,7 @@
           }
         }
       },
-      "EatenProductsResponse": {
+      "AddEatenProductsResponse": {
         "type": "object",
         "items": {
           "type": "object",
@@ -488,6 +587,64 @@
           "message": "success",
           "savedProductId": "61001b689081880004a65f49"
         }
+      },
+      "GetEatenProductsRequest": {
+        "type": "object",
+        "required": ["date"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "The requested date to get the food list",
+            "example": "01.05.21"
+          }
+        }
+      },
+      "GetEatenProductsResponse": {
+        "type": "object",
+        "items": {
+          "type": "array",
+          "properties": {
+            "userFoodListByDay": {
+              "type": "array",
+              "description": "User's eaten products list at required day"
+            }
+          }
+        },
+         "example": {
+            "message": "success",
+            "userFoodListByDay": [
+              {
+              "_id": "610194d7cdcd37c2ca8d3225",
+              "title": "pizza",
+              "weight": "100",
+              "calories": "320",
+              "date": "01.06.21"
+              },
+              {
+                "_id": "610194d7cdcd37c2ca8d3390",
+                "title": "banana",
+                "weight": "100",
+                "calories": "220",
+                "date": "01.06.21"
+              }
+            ]
+        }
+      },
+      "DeleteEatenProductsResponse" : {
+        "type": "object",
+        "items": {
+          "type": "string",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Result of operation"
+            }
+          }
+        },
+         "example": {
+            "message": "Product has been successfully deleted"
+          }
+      }
       }
     },
     "securitySchemes": {
@@ -497,5 +654,4 @@
         "bearerFormat": "JWT"
       }
     }
-  }
 }

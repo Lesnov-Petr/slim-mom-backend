@@ -4,7 +4,7 @@ const { Products } = require("../db/productsModel");
 const { EatenProducts } = require("../db/eatenProductsModel");
 const { User } = require("../db/userModel");
 
-const { QueryError } = require("../helpers/errors");
+const { QueryError, ClientError } = require("../helpers/errors");
 
 const searchProducts = async (query) => { 
   const allProductsList = await Products.find({});
@@ -83,24 +83,39 @@ const addEatenProducts = async ({ title, weight, calories, owner, date }) => {
   return _id;
 };
 
-const deleteEatenProducts = async (eatenProductId, userId) => {
-  await EatenProducts.findOneAndRemove({
-    _id: ObjectID(eatenProductId),
-    userId,
-  });
+const deleteEatenProducts = async ({ eatenProductId, owner }) => {
+  const user = await EatenProducts.findOne({ owner });
+  if (!user) {
+    throw new ClientError("User have no eaten products")
+  }
+
+  const product = user.eatenProducts.find(product => 
+    (JSON.stringify(product._id) === JSON.stringify(eatenProductId)))
+  if (!product) {
+    throw new ClientError("No product with this id")
+  }
+
+  await EatenProducts.updateOne(
+    { owner },
+    { $pull: { eatenProducts: { _id: eatenProductId } } }
+  )
 };
 
-const getEatenProducts = async (userId, dateToFind) => {
-  const userFoodList = await EatenProducts.findOne({
-    userId,
-  });
+const getEatenProducts = async ({owner, dateToFind}) => {
+  const user = await EatenProducts.findOne({owner})
+  if (!user) {
+    throw new ClientError("User have no eaten products list")
+  }
 
-  const userFoodListByDate = await userFoodList.eatenProducts.filter(
+  const userFoodListByDate = user.eatenProducts.filter(
     ({ date }) => date === dateToFind
   );
+  if (userFoodListByDate.length === 0) {
+    throw new ClientError("At this date user have no eaten products")
+  }
+
   return userFoodListByDate;
 };
-
 module.exports = {
   searchProducts,
   publicRecommendation,

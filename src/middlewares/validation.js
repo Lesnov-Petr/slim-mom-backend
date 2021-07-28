@@ -12,7 +12,7 @@ const userRegistrationValidation = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(30).required(),
     login: Joi.string().min(4).max(14).required(),
-    password: Joi.string().min(6).max(14).required(), // .pattern(new RegExp("^[a-zA-Z0-9]{6,20}$")) // РАЗОБРАТЬ ЭТО!
+    password: Joi.string().pattern(new RegExp("^[a-zA-Zа-яА-Я0-9]{6,14}$")),
   });
   checkValidation(schema, req, res, next);
 };

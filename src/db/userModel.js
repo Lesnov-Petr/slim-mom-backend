@@ -15,21 +15,25 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Set password for user"],
   },
-
   height: {
     type: Number,
+    default: null,
   },
   weight: {
     type: Number,
+    default: null,
   },
   age: {
     type: Number,
+    default: null,
   },
   desiredWeight: {
     type: Number,
+    default: null,
   },
   bloodGroup: {
     type: Number,
+    default: null,
   },
   token: {
     type: String,

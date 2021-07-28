@@ -1,4 +1,4 @@
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { User } = require("../db/userModel");
@@ -9,17 +9,10 @@ const {
 
 const logIn = async ({ login, password }) => {
   const user = await User.findOne({ login });
-
-  console.log("user:  ", user);
-
   if (!user) {
     throw new NotAuthorizedError("login  is wrong");
   }
-  console.log("user.password: ", user.password);
-  // if (!user || !(await bcrypt.compare(password, user.password))) {
-  // if (!(await bcrypt.compare(password, user.password))) {
-  if (!(password === user.password)) {
-    console.log("password:  ", password);
+  if (!await bcrypt.compare(password, user.password)) {
     throw new NotAuthorizedError("Password is wrong");
   }
 
@@ -43,11 +36,11 @@ const registration = async ({
   name,
   login,
   password,
-  // height,
-  // weight,
-  // desiredWeight,
-  // bloodGroup,
-  // age,
+  height,
+  weight,
+  desiredWeight,
+  bloodGroup,
+  age,
 }) => {
   const existLogin = await User.findOne({ login });
   if (existLogin) {
@@ -57,15 +50,15 @@ const registration = async ({
     name,
     login,
     password,
-    // height,
-    // weight,
-    // desiredWeight,
-    // bloodGroup,
-    // age,
+    height,
+    weight,
+    desiredWeight,
+    bloodGroup,
+    age,
   });
   await user.save();
-
-  return logIn({ login, password });
+  await logIn({ login, password });
+  return {name, login}
 };
 
 const logOut = async ({ id }) => {

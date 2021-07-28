@@ -1,11 +1,23 @@
 const { registration, logIn, logOut } = require("../services/authService");
 
 const registrationController = async (req, res, next) => {
-  const { name, login, password } = req.body;
+  const { name,
+  login,
+  password,
+  height,
+  weight,
+  desiredWeight,
+  bloodGroup,
+  age, } = req.body;
   const user = await registration({
     name,
     login,
     password,
+    height,
+    weight,
+    desiredWeight,
+    bloodGroup,
+    age,
   });
   res.status(201).json({ user });
 };

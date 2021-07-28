@@ -13,6 +13,11 @@ const userRegistrationValidation = (req, res, next) => {
     name: Joi.string().min(3).max(30).required(),
     login: Joi.string().min(4).max(14).required(),
     password: Joi.string().pattern(new RegExp("^[a-zA-Zа-яА-Я0-9]{6,14}$")),
+    height: Joi.string().min(2).max(3),
+    weight: Joi.string().min(2).max(3),
+    age: Joi.string().min(2).max(3),
+    desiredWeight: Joi.string().min(2).max(3),
+    bloodGroup: Joi.string().min(1).max(1),
   });
   checkValidation(schema, req, res, next);
 };

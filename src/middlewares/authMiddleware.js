@@ -3,29 +3,23 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../db/userModel");
 
 const authMiddleware = async (req, res, next) => {
-  try {
-    const [, token] = req.headers.authorization.split(' ');
-    if (!token) {
-      next(new NotAuthorizedError("Not authorized - not token data"));
-    }
-    const user = jwt.decode(token, process.env.JWT_SECRET);
+  const [, token] = req.headers.authorization.split(' ');
+  if (!token) {
+    next(new NotAuthorizedError("Not authorized - not token data"));
+  }
 
-    const userExist = await User.findOne({ _id: user._id });
-    if (!userExist) {
-      next(new NotAuthorizedError("Not authorized - user doesn't exist"));
-    }
-    if (userExist.token !== token) {
-      console.log("userExist.token: ", userExist.token);
-      console.log("token: ", token);
-      next(new NotAuthorizedError("Not authorized - wrong token"));
-    }
-    req.user = userExist;
-    console.log("req.user:  ", req.user);
-    req.token = token;
+  const user = await User.findOne({token})
+  if (!user) {
+    next(new NotAuthorizedError("Not authorized - wrong token"));
+  }
+
+  try {
+    const { _id } = jwt.decode(token, process.env.JWT_SECRET);
+    req.userId = _id
+    req.token = token
     next();
   } catch (err) {
-    console.log("err", err);
-    next(new NotAuthorizedError("Invalid token"));
+     next(new NotAuthorizedError(err.message))
   }
 };
 

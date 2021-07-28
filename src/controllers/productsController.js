@@ -30,7 +30,7 @@ const publicRecommendationController = async (req, res) => {
 };
 
 const privateRecommendationController = async (req, res) => {
-  const { _id: userId } = req.user;
+  const { userId } = req;
   const { height, weight, age, desiredWeight, bloodGroup } = req.body;
   const recommendation = await privateRecommendation(
     {
@@ -61,14 +61,14 @@ const addEatenProductsController = async (req, res) => {
 const deleteEatenProductsController = async (req, res) => {
   // const { dateToFind } = req.body;
   const { id: eatenProductId } = req.params;
-  const { _id: userId } = req.user;
+  const { userId } = req;
 
   await deleteEatenProducts(eatenProductId, userId);
   res.json({ message: `Product has been successfully deleted` });
 };
 
 const getEatenProductsController = async (req, res) => {
-  const { _id: userId } = req.user;
+  const { userId } = req;
   const { dateToFind } = req.body;
   const userFoodListByDay = await getEatenProducts(userId, dateToFind);
   res.json({ message: "success", userFoodListByDay });

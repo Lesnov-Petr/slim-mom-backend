@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const { Products } = require("../db/productsModel");
 const { EatenProducts } = require("../db/eatenProductsModel");
+const { User } = require("../db/userModel");
 
 const { QueryError } = require("../helpers/errors");
 
@@ -44,13 +45,10 @@ const privateRecommendation = async (
   { height, weight, age, desiredWeight, bloodGroup },
   userId
 ) => {
-  const user = await User.findById({ userId });
-  const recommendedCaloriesPerDay =
-    10 * Number(weight) +
-    6.25 * Number(height) -
-    5 * Number(age) -
-    161 -
-    10 * (Number(weight) - Number(desiredWeight));
+  await User.findByIdAndUpdate(
+     userId,
+    { $set:  { height, weight, age, desiredWeight, bloodGroup  } }
+  );
 
   const allProductsList = await Products.find({});
 
@@ -64,7 +62,7 @@ const privateRecommendation = async (
     return uniqueList;
   }, []);
 
-  return { recommendedCaloriesPerDay, productsNotAllowed };
+  return { productsNotAllowed };
 };
 
 const addEatenProducts = async ({ title, weight, calories, owner, date }) => {

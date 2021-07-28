@@ -10,7 +10,6 @@ const authMiddleware = async (req, res, next) => {
     }
     const user = jwt.decode(token, process.env.JWT_SECRET);
 
-    console.log("user._id ", user._id);
     const userExist = await User.findOne({ _id: user._id });
     if (!userExist) {
       next(new NotAuthorizedError("Not authorized - user doesn't exist"));

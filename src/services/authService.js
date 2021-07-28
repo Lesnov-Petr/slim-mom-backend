@@ -24,12 +24,12 @@ const logIn = async ({ login, password }) => {
     process.env.JWT_SECRET
   );
 
-  const updatedUser = await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     user._id,
     { $set: { token } },
     { new: true }
   );
-  return updatedUser;
+  return {token, login};
 };
 
 const registration = async ({

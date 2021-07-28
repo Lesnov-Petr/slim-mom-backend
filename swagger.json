@@ -69,9 +69,11 @@
         }
       }
     },
-  "/products/recommendation": {
+    "/products/recommendation": {
       "get": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "summary": "Returns a list of not recommended product categories",
         "parameters": [],
         "requestBody": {
@@ -105,11 +107,17 @@
           }
         }
       },
-    "post": {
-        "tags": ["Products"],
+      "post": {
+        "tags": [
+          "Products"
+        ],
         "summary": "Returns a list of not recommended product categories and save user's physiological parameters",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "requestBody": {
           "description": "User's blood number",
           "required": true,
@@ -139,8 +147,8 @@
           "401": {
             "description": "Not authorized - wrong token"
           },
-          "500" : {
-             "description": "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -189,10 +197,16 @@
         }
       },
       "get": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "summary": "Get the eaten product on a specific day",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "requestBody": {
           "description": "Requested date",
           "required": true,
@@ -247,7 +261,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successful operation",
+            "description": "Successful operation - user created",
             "content": {
               "application/json": {
                 "schema": {
@@ -305,18 +319,28 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "500" : {
-             "description": "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/products/eaten/:id": {
       "delete": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "summary": "Delete the product which was added to eaten list",
-        "parameters": [{"params": "id"}],
-        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "params": "id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -332,8 +356,8 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "500" : {
-             "description": "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -368,31 +392,18 @@
       },
       "RegistrationResponse": {
         "type": "object",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
-          }
-        },
-        "example": [
-          {
-            "email": "1@gmail.com",
-            "userId": "1"
+        "properties": {
+          "login": {
+            "type": "string",
+            "description": "User's login (unique)",
+            "example": "loginName"
           },
-          {
-            "email": "2@gmail.com",
-            "userId": "2"
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
           }
-        ]
+        }
       },
       "LoginRequest": {
         "type": "object",
@@ -415,31 +426,18 @@
       },
       "LoginResponse": {
         "type": "object",
-        "items": {
-          "type": "object",
-          "properties": {
-            "token": {
-              "type": "string",
-              "description": "User's token",
-              "example": "fgjfdng546545456fdgdfgddfd"
-            },
-            "login": {
-              "type": "string",
-              "description": "User's login",
-              "example": "loginName"
-            }
-          }
-        },
-        "example": [
-          {
-            "email": "1@gmail.com",
-            "userId": "1"
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "fgjfdng545567gjthjn9n9l86545456fdgdfgddfd"
           },
-          {
-            "email": "2@gmail.com",
-            "userId": "2"
+          "login": {
+            "type": "string",
+            "description": "User's login",
+            "example": "loginName"
           }
-        ]
+        }
       },
       "SearchProductResponse": {
         "type": "object",
@@ -590,7 +588,9 @@
       },
       "GetEatenProductsRequest": {
         "type": "object",
-        "required": ["date"],
+        "required": [
+          "date"
+        ],
         "properties": {
           "date": {
             "type": "string",
@@ -610,27 +610,27 @@
             }
           }
         },
-         "example": {
-            "message": "success",
-            "userFoodListByDay": [
-              {
+        "example": {
+          "message": "success",
+          "userFoodListByDay": [
+            {
               "_id": "610194d7cdcd37c2ca8d3225",
               "title": "pizza",
               "weight": "100",
               "calories": "320",
               "date": "01.06.21"
-              },
-              {
-                "_id": "610194d7cdcd37c2ca8d3390",
-                "title": "banana",
-                "weight": "100",
-                "calories": "220",
-                "date": "01.06.21"
-              }
-            ]
+            },
+            {
+              "_id": "610194d7cdcd37c2ca8d3390",
+              "title": "banana",
+              "weight": "100",
+              "calories": "220",
+              "date": "01.06.21"
+            }
+          ]
         }
       },
-      "DeleteEatenProductsResponse" : {
+      "DeleteEatenProductsResponse": {
         "type": "object",
         "items": {
           "type": "string",
@@ -641,17 +641,17 @@
             }
           }
         },
-         "example": {
-            "message": "Product has been successfully deleted"
-          }
-      }
-      }
-    },
-    "securitySchemes": {
-      "Bearer": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "example": {
+          "message": "Product has been successfully deleted"
+        }
       }
     }
+  },
+  "securitySchemes": {
+    "Bearer": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
 }

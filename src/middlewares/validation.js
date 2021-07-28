@@ -11,11 +11,13 @@ const checkValidation = (schema, req, res, next) => {
 const userRegistrationValidation = (req, res, next) => {
   const schema = Joi.object({
     login: Joi.string().min(4).max(14).required(),
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    }),
-    password: Joi.string().pattern(RegExp("^[a-zA-Z0-9]{6,14}$")),
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required(),
+    password: Joi.string().pattern(RegExp("^[a-zA-Z0-9]{6,14}$")).required(),
     height: Joi.string().min(2).max(3),
     weight: Joi.string().min(2).max(3),
     age: Joi.string().min(2).max(3),
@@ -38,11 +40,8 @@ const userInfoValidation = (req, res, next) => {
 
 const userLoginValidation = (req, res, next) => {
   const schema = Joi.object({
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    }),
-    password: Joi.string().pattern(RegExp("^[a-zA-Z0-9]{6,14}$")),
+    login: Joi.string().min(4).max(14).required(),
+    password: Joi.string().pattern(RegExp("^[a-zA-Z0-9]{6,14}$")).required(),
   });
   checkValidation(schema, req, res, next);
 };

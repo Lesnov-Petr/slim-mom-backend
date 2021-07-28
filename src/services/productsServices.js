@@ -4,7 +4,7 @@ const { Products } = require("../db/productsModel");
 const { EatenProducts } = require("../db/eatenProductsModel");
 const { User } = require("../db/userModel");
 
-const { QueryError } = require("../helpers/errors");
+const { QueryError, ClientError } = require("../helpers/errors");
 
 const searchProducts = async (query) => { 
   const allProductsList = await Products.find({});
@@ -91,11 +91,11 @@ const deleteEatenProducts = async (eatenProductId, userId) => {
 };
 
 const getEatenProducts = async (userId, dateToFind) => {
-  const userFoodList = await EatenProducts.findOne({
-    userId,
-  });
-
-  const userFoodListByDate = await userFoodList.eatenProducts.filter(
+  const userFoodList = await EatenProducts.findOne({owner: userId})
+  if (!userFoodList) {
+    throw new ClientError("User have no eaten products")
+  }
+  const userFoodListByDate = userFoodList.eatenProducts.filter(
     ({ date }) => date === dateToFind
   );
   return userFoodListByDate;

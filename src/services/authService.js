@@ -15,7 +15,9 @@ const logIn = async ({ login, password }) => {
   if (!user) {
     throw new NotAuthorizedError("login  is wrong");
   }
-  // if (!await bcrypt.compare(password, user.password)) {
+  console.log("user.password: ", user.password);
+  // if (!user || !(await bcrypt.compare(password, user.password))) {
+  // if (!(await bcrypt.compare(password, user.password))) {
   if (!(password === user.password)) {
     console.log("password:  ", password);
     throw new NotAuthorizedError("Password is wrong");
@@ -37,7 +39,16 @@ const logIn = async ({ login, password }) => {
   return updatedUser;
 };
 
-const registration = async ({ name, login, password, userInfo }) => {
+const registration = async ({
+  name,
+  login,
+  password,
+  // height,
+  // weight,
+  // desiredWeight,
+  // bloodGroup,
+  // age,
+}) => {
   const existLogin = await User.findOne({ login });
   if (existLogin) {
     throw new RegistrationConflictError("Login is already used");
@@ -46,37 +57,33 @@ const registration = async ({ name, login, password, userInfo }) => {
     name,
     login,
     password,
-    userInfo,
+    // height,
+    // weight,
+    // desiredWeight,
+    // bloodGroup,
+    // age,
   });
   await user.save();
 
   return logIn({ login, password });
 };
 
-const logOut = async ({ userId, token }) => {
+const logOut = async ({ id }) => {
   const logoutUser = await User.findOneAndUpdate(
-    { _id: userId, token },
+    { _id: id },
     { $set: { token: null } },
     { new: true }
   );
+
   if (!logoutUser) {
     throw new NotAuthorizedError("Not authorized");
   }
-};
 
-const getCurrentUser = async ({ userId, token }) => {
-  const currentUser = await User.findOne({ _id: userId, token });
-
-  console.log("currentUser", currentUser);
-  if (!currentUser) {
-    throw new NotAuthorizedError("Not authorized");
-  }
-  return currentUser;
+  return logoutUser;
 };
 
 module.exports = {
   registration,
   logIn,
   logOut,
-  getCurrentUser,
 };

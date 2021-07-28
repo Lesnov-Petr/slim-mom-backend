@@ -9,62 +9,33 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{ "url": "https://slim-mom-5group.herokuapp.com/" }],
-  "tags": [
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "servers": [
     {
-      "name": "Auth",
-      "description": "Authorization endpoints"
-    },
+      "url": "https://slim-mom-5group.herokuapp.com/"
+    }
+  ],
+  "tags": [
     {
       "name": "Products",
       "description": "Products endpoints. Interaction with products info."
+    },
+    {
+      "name": "Users",
+      "description": "Users endpoints. Interaction with user info."
     }
   ],
   "paths": {
-    "/auth/register": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "User registration",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Registration's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "409": {
-            "description": "Provided email already exists",
-            "content": {}
-          }
-        }
-      }
-    },
     "/products/search": {
       "get": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "summary": "Search the product list",
         "parameters": [
           {
@@ -75,8 +46,11 @@
             "description": "Title of product to search"
           }
         ],
-        "security": [{ "Bearer": [] }],
-        
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -95,7 +69,7 @@
         }
       }
     },
-    "/products/recommendation": {
+  "/products/recommendation": {
       "get": {
         "tags": ["Products"],
         "summary": "Returns a list of not recommended product categories",
@@ -126,12 +100,12 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "500" : {
-             "description": "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
-      "post": {
+    "post": {
         "tags": ["Products"],
         "summary": "Returns a list of not recommended product categories and save user's physiological parameters",
         "parameters": [],
@@ -173,7 +147,9 @@
     },
     "/products/eaten": {
       "post": {
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "summary": "Add the eaten product on a specific day",
         "parameters": [],
         "requestBody": {
@@ -182,19 +158,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEatenProductsRequest"
+                "$ref": "#/components/schemas/EatenProductsRequest"
               }
             }
           }
         },
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddEatenProductsResponse"
+                  "$ref": "#/components/schemas/EatenProductsResponse"
                 }
               }
             }
@@ -203,8 +183,8 @@
             "description": "Bad request (invalid request body)",
             "content": {}
           },
-          "500" : {
-             "description": "Internal Server Error"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -231,6 +211,92 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetEatenProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/registration": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User registration",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/usres/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User login",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "User's login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
                 }
               }
             }
@@ -277,12 +343,16 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["login", "email", "password"],
+        "required": [
+          "login",
+          "email",
+          "password"
+        ],
         "properties": {
           "login": {
             "type": "string",
             "description": "User's login",
-            "format": "email"
+            "example": "loginName"
           },
           "email": {
             "type": "string",
@@ -314,19 +384,74 @@
           }
         },
         "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
+          {
+            "email": "1@gmail.com",
+            "userId": "1"
+          },
+          {
+            "email": "2@gmail.com",
+            "userId": "2"
+          }
+        ]
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "login",
+          "password"
+        ],
+        "properties": {
+          "login": {
+            "type": "string",
+            "description": "User's login",
+            "example": "loginName"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "description": "User's token",
+              "example": "fgjfdng546545456fdgdfgddfd"
+            },
+            "login": {
+              "type": "string",
+              "description": "User's login",
+              "example": "loginName"
+            }
+          }
+        },
+        "example": [
+          {
+            "email": "1@gmail.com",
+            "userId": "1"
+          },
+          {
+            "email": "2@gmail.com",
+            "userId": "2"
+          }
         ]
       },
       "SearchProductResponse": {
-         "type": "object",
+        "type": "object",
         "items": {
           "type": "object",
           "properties": {
             "categories": {
               "type": "array",
               "description": "Product's category",
-              "example": ["яйца"]
+              "example": [
+                "яйца"
+              ]
             },
             "weight": {
               "type": "number",
@@ -349,24 +474,40 @@
             "groupBloodNotAllowed": {
               "type": "array",
               "description": "Array of booleans. If product is not recommended the meaning is 'true' ",
-              "example": [null, true, false, false, false]
+              "example": [
+                null,
+                true,
+                false,
+                false,
+                false
+              ]
             }
           }
         },
         "example": {
-          "categories": ["яйца"],
+          "categories": [
+            "яйца"
+          ],
           "weight": 100,
           "title": {
             "ru": "Яйцо куриное (желток сухой)",
             "ua": "Яйце куряче (жовток сухий)"
-           },
+          },
           "calories": 623,
-          "groupBloodNotAllowed": [null, true, false, false, false]
+          "groupBloodNotAllowed": [
+            null,
+            true,
+            false,
+            false,
+            false
+          ]
         }
       },
       "RecommendationRequest": {
         "type": "object",
-        "required": ["bloodGroup"],
+        "required": [
+          "bloodGroup"
+        ],
         "properties": {
           "bloodGroup": {
             "type": "number",
@@ -383,18 +524,31 @@
             "productsNotAllowed": {
               "type": "array",
               "description": "List of categories not allowed",
-              "example": ["мучные", "молочные", "мясо"]
+              "example": [
+                "мучные",
+                "молочные",
+                "мясо"
+              ]
             }
           }
         },
         "example": {
           "message": "success",
-          "productsNotAllowed": ["мучные", "молочные", "мясо"]
+          "productsNotAllowed": [
+            "мучные",
+            "молочные",
+            "мясо"
+          ]
         }
       },
       "AddEatenProductsRequest": {
         "type": "object",
-        "required": ["title", "weight", "calories", "date"],
+        "required": [
+          "title",
+          "weight",
+          "calories",
+          "date"
+        ],
         "properties": {
           "title": {
             "type": "string",
@@ -429,7 +583,7 @@
             }
           }
         },
-         "example": {
+        "example": {
           "message": "success",
           "savedProductId": "61001b689081880004a65f49"
         }

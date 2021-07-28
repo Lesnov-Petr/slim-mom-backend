@@ -1,17 +1,19 @@
 const { registration, logIn, logOut } = require("../services/authService");
 
 const registrationController = async (req, res, next) => {
-  const { name,
-  login,
-  password,
-  height,
-  weight,
-  desiredWeight,
-  bloodGroup,
-  age, } = req.body;
-  const user = await registration({
-    name,
+  const {
     login,
+    email,
+    password,
+    height,
+    weight,
+    desiredWeight,
+    bloodGroup,
+    age,
+  } = req.body;
+  const user = await registration({
+    login,
+    email,
     password,
     height,
     weight,
@@ -23,8 +25,8 @@ const registrationController = async (req, res, next) => {
 };
 
 const logInController = async (req, res, next) => {
-  const { login, password } = req.body;
-  const user = await logIn({ login, password });
+  const { email, password } = req.body;
+  const user = await logIn({ email, password });
   return res.status(200).json({ user });
 };
 

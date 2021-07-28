@@ -102,12 +102,12 @@ const deleteEatenProducts = async ({ eatenProductId, owner }) => {
 };
 
 const getEatenProducts = async ({owner, dateToFind}) => {
-  const userFoodList = await EatenProducts.findOne({owner})
-  if (!userFoodList) {
-    throw new ClientError("User have no eaten products")
+  const user = await EatenProducts.findOne({owner})
+  if (!user) {
+    throw new ClientError("User have no eaten products list")
   }
-  
-  const userFoodListByDate = userFoodList.eatenProducts.filter(
+
+  const userFoodListByDate = user.eatenProducts.filter(
     ({ date }) => date === dateToFind
   );
   if (userFoodListByDate.length === 0) {

@@ -61,9 +61,9 @@ const registration = async ({
   return {name, login, height, weight, desiredWeight, bloodGroup, age,}
 };
 
-const logOut = async ({ id }) => {
+const logOut = async (userId) => {
   const logoutUser = await User.findOneAndUpdate(
-    { _id: id },
+    { _id: userId },
     { $set: { token: null } },
     { new: true }
   );

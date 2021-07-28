@@ -29,12 +29,10 @@ const logInController = async (req, res, next) => {
 };
 
 const logOutController = async (req, res) => {
-  const { id } = req.user;
-  await logOut({
-    id,
-  });
+  const { userId } = req;
+  await logOut(userId);
 
-  res.status(204).json({ status: `No Content - logout sucsess by ${id}` });
+  res.status(204).json({ message: `No Content - logout sucsess by ${userId}` });
 };
 
 module.exports = {

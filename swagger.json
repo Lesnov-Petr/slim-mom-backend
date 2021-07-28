@@ -22,12 +22,12 @@
   ],
   "tags": [
     {
-      "name": "Products",
-      "description": "Products endpoints. Interaction with products info."
-    },
-    {
       "name": "Users",
       "description": "Users endpoints. Interaction with user info."
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints. Interaction with products info."
     }
   ],
   "paths": {

@@ -550,7 +550,6 @@
             "desiredWeight": 58,
             "bloodGroup": 3,
             "token": "eyJhbGciOiJiuzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTAyOTE0ZWQ5N2ZiOGUxZjQ5YzM4ZTciLCJsb2dpbiI6Im5uc25kMTIzIiwiaWF0IjoxNjI3NTU4Njc4fQ.B3G8sAvJUn8rQ382JXEGbdJhOtAY05K_NGxYVrwtH6w",
-            "_id": "6102914ed97fb8e1f49c58e7",
             "login": "example",
             "email": "example@gmail.com"
          }

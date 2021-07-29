@@ -74,7 +74,7 @@ const logOut = async (userId) => {
 
 const checkCurrentUser = async (token) => {
   const user = await User.findOne({ token })
-    .select({ password: 0, "__v": 0 })
+    .select({ password: 0, "__v": 0, _id: 0 })
 
   return user
 }

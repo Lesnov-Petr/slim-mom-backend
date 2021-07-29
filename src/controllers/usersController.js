@@ -1,4 +1,4 @@
-const { registration, logIn, logOut } = require("../services/authService");
+const { registration, logIn, logOut, checkCurrentUser} = require("../services/authService");
 
 const registrationController = async (req, res, next) => {
   const {
@@ -34,11 +34,18 @@ const logOutController = async (req, res) => {
   const { userId } = req;
   await logOut(userId);
 
-  res.status(204).json({ message: `No Content - logout sucsess by ${userId}` });
+  res.status(204).json({ message: `No Content - logout success by ${userId}` });
 };
+
+const currentUserController = async (req, res) => {
+  const { token } = req
+  const user = await checkCurrentUser(token);
+  res.json({ message: "success", user })
+}
 
 module.exports = {
   registrationController,
   logInController,
   logOutController,
+  currentUserController
 };

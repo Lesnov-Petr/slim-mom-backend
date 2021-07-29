@@ -55,8 +55,7 @@ const registration = async ({
     age,
   });
   await user.save();
-  await logIn({ login, password });
-  return { login, email, height, weight, desiredWeight, bloodGroup, age };
+  return logIn({ login, password });
 };
 
 const logOut = async (userId) => {
@@ -73,8 +72,16 @@ const logOut = async (userId) => {
   return logoutUser;
 };
 
+const checkCurrentUser = async (token) => {
+  const user = await User.findOne({ token })
+    .select({ password: 0, "__v": 0 })
+
+  return user
+}
+
 module.exports = {
   registration,
   logIn,
   logOut,
+  checkCurrentUser
 };

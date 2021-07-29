@@ -14,7 +14,7 @@ const userRegistrationValidation = (req, res, next) => {
     email: Joi.string()
       .email({
         minDomainSegments: 2,
-        tlds: { allow: ["com", "net"] },
+        tlds: { allow: ["com", "net", "ru"] },
       })
       .required(),
     password: Joi.string().pattern(RegExp("^[a-zA-Z0-9]{6,14}$")).required(),

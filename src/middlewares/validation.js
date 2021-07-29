@@ -46,8 +46,19 @@ const userLoginValidation = (req, res, next) => {
   checkValidation(schema, req, res, next);
 };
 
+const addProductValidation = (req, res, next) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    calories: Joi.number().required(),
+    weight: Joi.number(),
+    date: Joi.string().required(),
+  });
+  checkValidation(schema, req, res, next);
+}
+
 module.exports = {
   userRegistrationValidation,
   userInfoValidation,
   userLoginValidation,
+  addProductValidation
 };

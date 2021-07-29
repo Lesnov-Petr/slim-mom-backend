@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { asyncWrapper } = require("../helpers/apiHelpers");
 const { authMiddleware } = require("../middlewares/authMiddleware");
-const { userInfoValidation } = require("../middlewares/validation")
+const { userInfoValidation, addProductValidation } = require("../middlewares/validation")
 
 const {
   searchProductsController,
@@ -19,7 +19,7 @@ router.get("/recommendation", userInfoValidation , asyncWrapper(publicRecommenda
 router.use(authMiddleware);
 router.get("/search", asyncWrapper(searchProductsController));
 router.post("/recommendation", userInfoValidation, asyncWrapper(privateRecommendationController));
-router.post("/eaten", asyncWrapper(addEatenProductsController));
+router.post("/eaten",addProductValidation , asyncWrapper(addEatenProductsController));
 router.delete("/eaten/:id", asyncWrapper(deleteEatenProductsController));
 router.get("/eaten", asyncWrapper(getEatenProductsController));
 

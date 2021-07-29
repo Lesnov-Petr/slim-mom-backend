@@ -61,7 +61,6 @@ const addEatenProductsController = async (req, res) => {
 const deleteEatenProductsController = async (req, res) => {
   const { id: eatenProductId } = req.params;
   const owner = req.userId;
-
   await deleteEatenProducts({eatenProductId, owner});
   res.json({ message: `Product has been successfully deleted` });
 };

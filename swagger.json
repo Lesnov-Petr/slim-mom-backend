@@ -322,7 +322,7 @@
         }
       }
     },
-    "/usres/logout": {
+    "/users/logout": {
       "post": {
         "tags": [
           "Users"
@@ -334,17 +334,6 @@
             "Bearer": []
           }
         ],
-        "requestBody": {
-          "description": "User's logout object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogoutRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "204": {
             "description": "No content - successful logout",

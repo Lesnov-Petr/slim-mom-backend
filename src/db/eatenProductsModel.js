@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const eatenProductsSchema = new mongoose.Schema({
   owner: {
-    type: String ||  mongoose.Schema.Types.ObjectId,
+    type: String,
     required: [true, "Provide user id"],
     unique: true
   },
@@ -12,11 +12,11 @@ const eatenProductsSchema = new mongoose.Schema({
       required: [true, "Set title for product"]
     },
     calories: {
-      type: String,
+      type: Number,
       required: [true, "Set calories for the amount of eaten product"]
     },
     weight: {
-      type: String,
+      type: Number,
       required: [true, "Set weight of eaten product"]
     },
     date: {

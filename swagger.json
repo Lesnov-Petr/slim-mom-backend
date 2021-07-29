@@ -22,12 +22,12 @@
   ],
   "tags": [
     {
-      "name": "Products",
-      "description": "Products endpoints. Interaction with products info."
-    },
-    {
       "name": "Users",
       "description": "Users endpoints. Interaction with user info."
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints. Interaction with products info."
     }
   ],
   "paths": {
@@ -69,7 +69,7 @@
         }
       }
     },
-    "/products/recommendation": {
+   "/products/recommendation": {
       "get": {
         "tags": [
           "Products"
@@ -166,7 +166,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EatenProductsRequest"
+                "$ref": "#/components/schemas/AddEatenProductsRequest"
               }
             }
           }
@@ -182,7 +182,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EatenProductsResponse"
+                  "$ref": "#/components/schemas/AddEatenProductsResponse"
                 }
               }
             }
@@ -281,7 +281,7 @@
         }
       }
     },
-    "/usres/login": {
+    "/users/login": {
       "post": {
         "tags": [
           "Users"
@@ -543,24 +543,44 @@
             }
           }
         },
-        "example": {
-          "categories": [
-            "яйца"
-          ],
-          "weight": 100,
-          "title": {
-            "ru": "Яйцо куриное (желток сухой)",
-            "ua": "Яйце куряче (жовток сухий)"
-          },
-          "calories": 623,
-          "groupBloodNotAllowed": [
-            null,
-            true,
-            false,
-            false,
-            false
+        "example": 
+          [
+            {"categories": [
+              "яйца"
+            ],
+            "weight": 100,
+            "title": {
+              "ru": "Яйцо куриное (желток сухой)",
+              "ua": "Яйце куряче (жовток сухий)"
+            },
+            "calories": 623,
+            "groupBloodNotAllowed": [
+              null,
+              true,
+              false,
+              false,
+              false
+            ]
+            },
+            {"categories": [
+              "мучные"
+            ],
+            "weight": 100,
+            "title": {
+                "ru": "Смесь мучная без глютена Гарнец Шоколадный торт",
+                "ua": "Суміш борошняна без глютену Гарнець Шоколадний торт"
+            },
+            "calories": 350,
+            "groupBloodNotAllowed": [
+              null,
+              true,
+              false,
+              false,
+              false
+            ]
+            }
           ]
-        }
+        
       },
       "RecommendationRequest": {
         "type": "object",
@@ -571,7 +591,7 @@
           "bloodGroup": {
             "type": "number",
             "description": "User's blood group",
-            "example": "2"
+            "example": 2
           }
         }
       },
@@ -702,17 +722,17 @@
             }
           }
         },
-        "example": {
-          "message": "Product has been successfully deleted"
-        }
+         "example": {
+            "message": "Product has been successfully deleted"
+          }
       }
-    }
-  },
-  "securitySchemes": {
-    "Bearer": {
-      "type": "http",
-      "scheme": "bearer",
-      "bearerFormat": "JWT"
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
   }
 }
